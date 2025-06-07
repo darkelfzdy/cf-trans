@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Languages, X, Copy } from 'lucide-vue-next';
 
 const inputText = ref('');
 const translatedText = ref('');
@@ -121,206 +132,97 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app">
-    <h1>
-      <img src="/vite.svg" alt="Vite Logo" class="title-logo" /> AI 翻译
+  <div class="translator-app flex flex-col items-center min-h-screen p-4 sm:p-6 md:p-8 bg-background text-foreground">
+    <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
+      <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
-    <div class="controls">
-      <select v-model="sourceLang" aria-label="源语言">
-        <option v-for="lang in supportedLanguages" :key="lang.value" :value="lang.value">
-          {{ lang.text }}
-        </option>
-      </select>
+    <div class="controls flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 w-full max-w-2xl">
+      <Select v-model="sourceLang">
+        <SelectTrigger class="w-full sm:w-[180px]" aria-label="源语言">
+          <SelectValue placeholder="选择源语言" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem v-for="lang in supportedLanguages" :key="lang.value" :value="lang.value">
+              {{ lang.text }}
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
-      <button @click="swapLanguages" class="swap-button" aria-label="切换语言">
-        ↔️
-      </button>
+      <Button @click="swapLanguages" variant="outline" size="icon" aria-label="切换语言" class="p-2">
+        <Languages class="h-5 w-5" />
+      </Button>
 
-      <select v-model="targetLang" aria-label="目标语言">
-        <option v-for="lang in targetLanguages" :key="lang.value" :value="lang.value">
-          {{ lang.text }}
-        </option>
-      </select>
+      <Select v-model="targetLang">
+        <SelectTrigger class="w-full sm:w-[180px]" aria-label="目标语言">
+          <SelectValue placeholder="选择目标语言" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem v-for="lang in targetLanguages" :key="lang.value" :value="lang.value">
+              {{ lang.text }}
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
 
-    <div class="text-areas">
-      <div class="text-area-container">
-        <textarea
+    <div class="text-areas grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl flex-grow">
+      <div class="relative flex flex-col">
+        <Textarea
           v-model="inputText"
           placeholder="输入要翻译的文本"
           aria-label="待翻译文本输入区"
-        ></textarea>
-        <button @click="clearInput" v-if="inputText" class="clear-button" aria-label="清除输入">
-          ❌
-        </button>
+          class="flex-grow resize-none min-h-[200px] p-4 pr-12 border rounded-md"
+        />
+        <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="清除输入">
+          <X class="h-5 w-5" />
+        </Button>
       </div>
 
-      <div class="text-area-container">
-        <textarea
-          :value="translatedText"
+      <div class="relative flex flex-col">
+        <Textarea
+          :model-value="translatedText"
           readonly
           placeholder="翻译结果"
           aria-label="翻译结果展示区"
-        ></textarea>
-        <button @click="copyResult" v-if="translatedText" class="copy-button" aria-label="复制结果">
-          📋
-        </button>
+          class="flex-grow resize-none min-h-[200px] p-4 pr-12 border rounded-md bg-muted"
+        />
+        <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="复制结果">
+          <Copy class="h-5 w-5" />
+        </Button>
       </div>
     </div>
 
-    <div v-if="isLoading" class="loading-indicator">
+    <div v-if="isLoading" class="loading-indicator text-center p-4 text-muted-foreground italic text-lg">
       翻译中...
     </div>
 
-    <div v-if="errorMessage" class="error-message">
+    <div v-if="errorMessage" class="error-message mt-4 text-center p-4 text-destructive bg-destructive/10 border border-destructive rounded-md text-lg w-full max-w-4xl">
       <p>错误: {{ errorMessage }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
-.translator-app {
-  /* max-width: 800px; */ /* 移除最大宽度限制 */
-  width: 100%; /* 占满父容器 (#app) 的宽度 */
-  min-height: 100vh; /* 至少占满视口高度 */
-  margin: 0; /* 移除外边距 */
-  padding: 20px; /* 保留一些内边距 */
-  font-family: sans-serif;
-  /* background-color: #f9f9f9; */ /* 背景色由全局 style.css 控制 */
-  /* border-radius: 8px; */ /* 移除圆角，使其更像全屏应用 */
-  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */ /* 移除阴影 */
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box; /* 确保 padding 不会增加总宽度/高度 */
-}
+/* 移除了大部分自定义样式，优先使用 Tailwind CSS 和 shadcn-vue 组件的默认样式 */
+/* .translator-app, h1, .title-logo, .controls, .controls select, .swap-button, */
+/* .text-areas, .text-area-container, textarea, .clear-button, .copy-button */
+/* 的样式已通过 Tailwind CSS 类在模板中直接定义或由 shadcn-vue 组件提供。 */
 
-h1 {
-  text-align: center;
-  /* color: #333; */ /* 颜色由全局 style.css 控制 */
-  margin-bottom: 25px; /* 稍微增加底部边距 */
-  font-size: 2.2em; /* 适当调整标题大小 */
-  display: flex; /* 用于垂直居中图片和文本 */
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
-}
-
-.title-logo {
-  height: 1.2em; /* 根据字体大小调整logo高度 */
-  margin-right: 10px; /* logo和文本之间的间距 */
-  vertical-align: middle; /* 尝试另一种垂直对齐方式，尽管flex通常能处理好 */
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px; /* 稍微增加底部边距 */
-  gap: 15px; /* 稍微增加间隙 */
-  flex-wrap: wrap; /* 允许控件换行 */
-}
-
-.controls select {
-  padding: 12px 15px; /* 增加内边距 */
-  border: 1px solid #ccc;
-  border-radius: 6px; /* 稍微增加圆角 */
-  flex-grow: 1;
-  font-size: 1.1em; /* 增加字体大小 */
-  min-width: 150px; /* 确保下拉框有最小宽度 */
-}
-
-.swap-button {
-  padding: 12px 20px; /* 增加内边距 */
-  /* background-color: #007bff; */ /* 颜色由全局 style.css 控制或保持默认 */
-  /* color: white; */
-  border: none;
-  border-radius: 6px; /* 稍微增加圆角 */
-  cursor: pointer;
-  font-size: 1.2em; /* 增加字体大小 */
-}
-
-/* .swap-button:hover { */
-  /* background-color: #0056b3; */ /* 颜色由全局 style.css 控制或保持默认 */
-/* } */
-
-.text-areas {
-  display: flex;
-  gap: 25px; /* 稍微增加间隙 */
-  margin-bottom: 25px; /* 稍微增加底部边距 */
-  flex-grow: 1; /* 使文本区域占据剩余空间 */
-  flex-direction: row; /* 默认是row，确保 */
-}
-
-@media (max-width: 768px) {
-  .text-areas {
-    flex-direction: column; /* 在小屏幕上垂直排列 */
-  }
-  .controls {
-    flex-direction: column;
-  }
-  .controls select {
-    width: 100%;
-  }
-}
-
-
-.text-area-container {
-  flex: 1; /* 每个文本区域容器占据一半空间 */
-  position: relative;
-  display: flex; /* 使 textarea 可以 flex-grow */
-  flex-direction: column;
-}
-
-textarea {
-  width: 100%;
-  /* height: 300px; */ /* 移除固定高度，让其自适应或通过 flex-grow 控制 */
-  flex-grow: 1; /* 使 textarea 填满其容器的高度 */
-  padding: 15px; /* 增加内边距 */
-  border: 1px solid #ccc;
-  border-radius: 6px; /* 稍微增加圆角 */
-  font-size: 1.1em; /* 增加字体大小 */
-  box-sizing: border-box;
-  resize: none; /* 禁止用户调整大小，以保持布局 */
-  min-height: 200px; /* 设置最小高度 */
-}
-
-textarea[readonly] {
-  /* background-color: #f0f0f0; */ /* 背景色由全局 style.css 控制 */
-}
-
-.clear-button,
-.copy-button {
-  position: absolute;
-  top: 15px; /* 调整位置 */
-  right: 15px; /* 调整位置 */
-  background: none;
-  border: none;
-  font-size: 1.4em; /* 增加图标大小 */
-  cursor: pointer;
-  padding: 8px; /* 增加点击区域 */
-  /* color: #666; */ /* 颜色由全局 style.css 控制 */
-}
-
-/* .clear-button:hover, */
-/* .copy-button:hover { */
-  /* color: #333; */ /* 颜色由全局 style.css 控制 */
-/* } */
-
+/* 可以保留或调整全局消息提示的样式，或完全依赖 Tailwind 类 */
 .loading-indicator {
-  text-align: center;
-  padding: 15px; /* 增加内边距 */
-  /* color: #007bff; */ /* 颜色由全局 style.css 控制 */
-  font-style: italic;
-  font-size: 1.1em;
+  /* 样式已通过 Tailwind 类在模板中定义: */
+  /* text-center p-4 text-muted-foreground italic text-lg */
 }
 
 .error-message {
-  text-align: center;
-  padding: 15px; /* 增加内边距 */
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 6px; /* 稍微增加圆角 */
-  font-size: 1.1em;
+  /* 样式已通过 Tailwind 类在模板中定义: */
+  /* text-center p-4 text-destructive bg-destructive/10 border border-destructive rounded-md text-lg */
 }
+
+/* 如果有特定于此组件且无法通过 Tailwind 轻松实现的样式，可以保留在这里 */
+/* 例如，如果需要非常特定的动画或过渡效果 */
 </style>
