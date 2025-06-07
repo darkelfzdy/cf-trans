@@ -8,48 +8,41 @@
 
 ## 本地开发说明
 
-项目包含一个 `wrangler.toml` 文件，用于配置 `wrangler` CLI，特别是在本地使用 `wrangler pages dev` 命令运行和测试Pages Functions时。构建输出目录配置为 `dist`。
-
 按照以下步骤在本地设置和运行项目：
 
 ### 1. 设置环境变量
 
-首先，复制环境变量示例文件：
+对于本地开发，`GEMINI_MODEL_NAME`、`AI_GATEWAY_URL` 和 `GOOGLE_AI_API_KEY` **全部都必须在项目根目录下的 `.env` 文件中进行设置**。
 
-```bash
-cp .env.example .env
-```
+1.  **创建 `.env` 文件:**
+    *   从 [`.env.example`](./.env.example:1) 复制一份并重命名为 `.env`。
+    *   `.env` 文件已被列入 [`.gitignore`](./.gitignore:1)，不会提交到版本库。
 
-然后，编辑 `.env` 文件，填入您的实际值，特别是 `GOOGLE_GEMINI_API_KEY`。
+2.  **配置变量:**
+    *   在 `.env` 文件中填入以下所有变量的值：
+        *   `GOOGLE_AI_API_KEY`: 您的 Google AI API 密钥。
+        *   `GEMINI_MODEL_NAME`: 您希望使用的 Gemini 模型名称 (例如 `gemini-pro`)。
+        *   `AI_GATEWAY_URL`: 您的 Cloudflare AI Gateway 的 URL。
 
-```
-# .env
-GOOGLE_GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+    *   一个清晰的 `.env` 文件内容示例如下：
+        ```
+        # .env (本地开发环境变量 - 不要提交到版本库)
+        GOOGLE_AI_API_KEY=YOUR_ACTUAL_GOOGLE_AI_API_KEY
+        GEMINI_MODEL_NAME=gemini-pro
+        AI_GATEWAY_URL=YOUR_ACTUAL_CLOUDFLARE_AI_GATEWAY_URL
+        ```
 
-# Cloudflare Pages AI Gateway (可选, 如果你配置了AI Gateway)
-# CF_PAGES_AI_GATEWAY="YOUR_AI_GATEWAY_URL"
-```
+`wrangler` (通过 `npm run pages:dev` 运行时) 会自动加载 `.env` 文件中的环境变量。
 
 ### 2. 启动后端服务 (Cloudflare Pages Functions)
 
-您可以使用 `wrangler` 来本地运行 Pages Functions。一个通用的启动命令示例如下：
+您可以使用 `wrangler` 来本地运行 Pages Functions。
 
 ```bash
 npm run pages:dev
 ```
 
-或者，如果您需要更精细的控制或项目中的 `package.json` 脚本不同，您可能需要使用类似以下的命令：
-
-```bash
-npx wrangler pages dev dist --do=CF_PAGES_AI_GATEWAY=http://localhost:8788
-```
-
-**注意:**
-*   请检查您的 [`package.json`](./package.json:1) 文件中是否有为本地 Pages Functions 开发配置的特定脚本 (例如 `pages:dev` 或类似名称)。
-*   上述 `npx wrangler pages dev dist` 命令中的 `dist` 是前端静态资源的输出目录，这与 `wrangler.toml` 中的 `pages_build_output_dir = "dist"` 配置一致。此命令用于在本地模拟 Cloudflare Pages 环境，同时提供静态资源和运行 Pages Functions。
-*   `--do=CF_PAGES_AI_GATEWAY=http://localhost:8788` 是一个示例，用于将名为 `CF_PAGES_AI_GATEWAY` 的 Durable Object 绑定指向本地开发服务器的特定端口。如果您的项目不使用此特定绑定或以不同方式配置，请相应调整。
-
-后端服务通常会启动在 `http://localhost:8788` (这是 `wrangler` 的默认端口之一，但也可能不同)。
+后端服务通常会启动在 `http://localhost:8788`。
 
 ### 3. 启动前端开发服务器
 
@@ -59,11 +52,11 @@ npx wrangler pages dev dist --do=CF_PAGES_AI_GATEWAY=http://localhost:8788
 npm run dev
 ```
 
-前端应用通常会运行在 `http://localhost:5173` (Vite 的默认端口)。
+前端应用通常会运行在 `http://localhost:5173`。
 
 ### 4. 确认代理配置
 
-确保 [`vite.config.ts`](./vite.config.ts:1) 文件中的 `server.proxy` 配置的目标端口与您后端服务 (例如 `wrangler dev`) 实际运行的端口一致。默认配置为 `http://localhost:8788`。如果您的后端服务运行在不同端口，请相应修改 [`vite.config.ts`](./vite.config.ts:1)。
+确保 [`vite.config.ts`](./vite.config.ts:1) 文件中的 `server.proxy` 配置的目标端口与您后端服务 (例如 `wrangler dev`) 实际运行的端口 (`http://localhost:8788`) 一致。
 
 ## 构建命令
 
@@ -101,13 +94,30 @@ npm run build
     *   **构建命令:** 确保此项设置为 `npm run build` (或您在 `package.json` 中定义的构建脚本)。
     *   **构建输出目录:** 确保此项设置为 `dist`。
     *   **根目录 (高级):** 通常留空，除非您的项目不在仓库的根目录。
+6.  **添加环境变量和 Secrets:**
+    *   部署完成后（或在初始设置的 "Environment variables (advanced)" 部分），导航到您的 Pages 项目的 "Settings" -> "Environment variables"。
+    *   **`GOOGLE_AI_API_KEY` (Secret):**
+        *   点击 "Add variable"。
+        *   输入变量名称 `GOOGLE_AI_API_KEY`。
+        *   输入您的实际 Google AI API 密钥作为值。
+        *   **重要:** 点击 "Encrypt" 按钮（或选择 "Secret" 类型，具体UI可能略有不同）将此变量标记为 Secret。保存更改。这确保了您的 API 密钥被安全地加密存储。
+    *   **`GEMINI_MODEL_NAME` (普通文本变量):**
+        *   点击 "Add variable"。
+        *   输入变量名称 `GEMINI_MODEL_NAME`。
+        *   输入您希望在生产环境使用的模型名称 (例如 `gemini-pro` 或 `gemini-1.5-flash-latest`)。
+        *   **不要**加密此变量。保存更改。
+    *   **`AI_GATEWAY_URL` (普通文本变量):**
+        *   点击 "Add variable"。
+        *   输入变量名称 `AI_GATEWAY_URL`。
+        *   输入您在 Cloudflare 上配置的 AI Gateway 的完整 URL。
+        *   **不要**加密此变量。保存更改。
+    *   **说明:**
+        *   Cloudflare Pages 会使用在 UI 中明确设置的这些环境变量。
+        *   对于 Secrets (如 `GOOGLE_AI_API_KEY`)，它们**必须**通过 Cloudflare Pages UI 进行设置和加密。
+    *   **(可选) Node.js 版本:**
+        *   如果需要指定特定的 Node.js 版本，您可以在 "Settings" -> "Environment variables" 中添加一个名为 `NODE_VERSION` 的环境变量，并设置所需版本 (例如 `20`)。或者，也可以在 [`wrangler.toml`](./wrangler.toml:1) 的 `[vars]` 中设置 `NODE_VERSION`，但 UI 设置通常优先。
 
-6.  **添加环境变量 (重要):**
-    *   在 "Environment variables (advanced)" 部分，点击 "Add variable" 为生产环境添加以下变量。这些变量对于后端 Functions 的正常运行至关重要。
-    *   `GOOGLE_AI_API_KEY`: 您的 Google AI API 密钥。**请务必勾选 "Encrypt" 将其标记为机密值。**
-    *   `GEMINI_MODEL_NAME`: 您希望使用的 Gemini 模型名称 (例如 `gemini-pro`，根据您的 [`.env.example`](./.env.example:1) 或PRD)。
-    *   `AI_GATEWAY_URL`: 您的 Cloudflare AI Gateway 的 URL。
-    *   (可选) 您可能还需要为 Node.js 版本设置一个环境变量，例如 `NODE_VERSION`，设置为一个与您本地开发环境兼容的 LTS 版本 (例如 `18` 或 `20`)，如果 Cloudflare 的默认版本不适用。
+    **提示:** Cloudflare Pages 允许您为 "Production" 和 "Preview" 环境分别设置环境变量和 Secrets。请确保为 "Production" 环境正确配置了所有必需的值。
 
 7.  **保存并部署:**
     *   点击 "Save and Deploy"。
