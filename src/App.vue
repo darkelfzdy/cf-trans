@@ -122,7 +122,9 @@ async function copyResult() {
 
 <template>
   <div class="translator-app">
-    <h1>Cloudflare AI 翻译</h1>
+    <h1>
+      <img src="/vite.svg" alt="Vite Logo" class="title-logo" /> AI 翻译
+    </h1>
 
     <div class="controls">
       <select v-model="sourceLang" aria-label="源语言">
@@ -198,6 +200,15 @@ h1 {
   /* color: #333; */ /* 颜色由全局 style.css 控制 */
   margin-bottom: 25px; /* 稍微增加底部边距 */
   font-size: 2.2em; /* 适当调整标题大小 */
+  display: flex; /* 用于垂直居中图片和文本 */
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+}
+
+.title-logo {
+  height: 1.2em; /* 根据字体大小调整logo高度 */
+  margin-right: 10px; /* logo和文本之间的间距 */
+  vertical-align: middle; /* 尝试另一种垂直对齐方式，尽管flex通常能处理好 */
 }
 
 .controls {
