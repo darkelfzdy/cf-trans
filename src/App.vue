@@ -169,7 +169,7 @@ async function copyResult() {
       </Select>
     </div>
 
-    <div class="text-areas grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl flex-grow">
+    <div class="text-areas grid grid-cols-2 gap-6 w-full max-w-4xl flex-grow">
       <div class="relative flex flex-col">
         <Textarea
           v-model="inputText"
