@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.8",
+    "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "^22.15.30",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
