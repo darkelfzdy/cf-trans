@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@google/generative-ai": "latest",
+    "@vueuse/core": "^13.3.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.513.0",
+    "reka-ui": "^2.3.1",
     "tailwind-merge": "^3.3.0",
     "tw-animate-css": "^1.3.4",
     "vue": "^3.5.13"
