@@ -179,108 +179,137 @@ async function copyResult() {
 
 <style scoped>
 .translator-app {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
+  /* max-width: 800px; */ /* 移除最大宽度限制 */
+  width: 100%; /* 占满父容器 (#app) 的宽度 */
+  min-height: 100vh; /* 至少占满视口高度 */
+  margin: 0; /* 移除外边距 */
+  padding: 20px; /* 保留一些内边距 */
   font-family: sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* background-color: #f9f9f9; */ /* 背景色由全局 style.css 控制 */
+  /* border-radius: 8px; */ /* 移除圆角，使其更像全屏应用 */
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */ /* 移除阴影 */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box; /* 确保 padding 不会增加总宽度/高度 */
 }
 
 h1 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  /* color: #333; */ /* 颜色由全局 style.css 控制 */
+  margin-bottom: 25px; /* 稍微增加底部边距 */
+  font-size: 2.2em; /* 适当调整标题大小 */
 }
 
 .controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  gap: 10px;
+  margin-bottom: 25px; /* 稍微增加底部边距 */
+  gap: 15px; /* 稍微增加间隙 */
+  flex-wrap: wrap; /* 允许控件换行 */
 }
 
 .controls select {
-  padding: 10px;
+  padding: 12px 15px; /* 增加内边距 */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px; /* 稍微增加圆角 */
   flex-grow: 1;
-  font-size: 1em;
+  font-size: 1.1em; /* 增加字体大小 */
+  min-width: 150px; /* 确保下拉框有最小宽度 */
 }
 
 .swap-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
+  padding: 12px 20px; /* 增加内边距 */
+  /* background-color: #007bff; */ /* 颜色由全局 style.css 控制或保持默认 */
+  /* color: white; */
   border: none;
-  border-radius: 4px;
+  border-radius: 6px; /* 稍微增加圆角 */
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.2em; /* 增加字体大小 */
 }
 
-.swap-button:hover {
-  background-color: #0056b3;
-}
+/* .swap-button:hover { */
+  /* background-color: #0056b3; */ /* 颜色由全局 style.css 控制或保持默认 */
+/* } */
 
 .text-areas {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 25px; /* 稍微增加间隙 */
+  margin-bottom: 25px; /* 稍微增加底部边距 */
+  flex-grow: 1; /* 使文本区域占据剩余空间 */
+  flex-direction: row; /* 默认是row，确保 */
 }
 
+@media (max-width: 768px) {
+  .text-areas {
+    flex-direction: column; /* 在小屏幕上垂直排列 */
+  }
+  .controls {
+    flex-direction: column;
+  }
+  .controls select {
+    width: 100%;
+  }
+}
+
+
 .text-area-container {
-  flex: 1;
+  flex: 1; /* 每个文本区域容器占据一半空间 */
   position: relative;
+  display: flex; /* 使 textarea 可以 flex-grow */
+  flex-direction: column;
 }
 
 textarea {
   width: 100%;
-  height: 200px;
-  padding: 10px;
+  /* height: 300px; */ /* 移除固定高度，让其自适应或通过 flex-grow 控制 */
+  flex-grow: 1; /* 使 textarea 填满其容器的高度 */
+  padding: 15px; /* 增加内边距 */
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
+  border-radius: 6px; /* 稍微增加圆角 */
+  font-size: 1.1em; /* 增加字体大小 */
   box-sizing: border-box;
-  resize: vertical;
+  resize: none; /* 禁止用户调整大小，以保持布局 */
+  min-height: 200px; /* 设置最小高度 */
 }
 
 textarea[readonly] {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */ /* 背景色由全局 style.css 控制 */
 }
 
 .clear-button,
 .copy-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px; /* 调整位置 */
+  right: 15px; /* 调整位置 */
   background: none;
   border: none;
-  font-size: 1.2em;
+  font-size: 1.4em; /* 增加图标大小 */
   cursor: pointer;
-  padding: 5px;
-  color: #666;
+  padding: 8px; /* 增加点击区域 */
+  /* color: #666; */ /* 颜色由全局 style.css 控制 */
 }
 
-.clear-button:hover,
-.copy-button:hover {
-  color: #333;
-}
+/* .clear-button:hover, */
+/* .copy-button:hover { */
+  /* color: #333; */ /* 颜色由全局 style.css 控制 */
+/* } */
 
 .loading-indicator {
   text-align: center;
-  padding: 10px;
-  color: #007bff;
+  padding: 15px; /* 增加内边距 */
+  /* color: #007bff; */ /* 颜色由全局 style.css 控制 */
   font-style: italic;
+  font-size: 1.1em;
 }
 
 .error-message {
   text-align: center;
-  padding: 10px;
+  padding: 15px; /* 增加内边距 */
   color: #dc3545;
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  border-radius: 6px; /* 稍微增加圆角 */
+  font-size: 1.1em;
 }
 </style>

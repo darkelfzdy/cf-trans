@@ -24,14 +24,15 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex; */ /* 移除以避免内容被强制居中 */
+  /* place-items: center; */ /* 移除以避免内容被强制居中 */
   min-width: 320px;
   min-height: 100vh;
+  width: 100%; /* 确保body占满宽度 */
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.5em; /* 稍微调整一下，因为App.vue里也有h1 */
   line-height: 1.1;
 }
 
@@ -59,10 +60,13 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%; /* 使 #app 占满父容器 (body) 的宽度 */
+  min-height: 100vh; /* 使 #app 占满父容器 (body) 的高度 */
+  margin: 0; /* 移除外边距 */
+  padding: 0; /* 移除内边距，让 App.vue 控制 */
+  /* text-align: center; */ /* 移除，让 App.vue 控制文本对齐 */
+  display: flex; /* 使 #app 成为 flex 容器，以便 .translator-app 可以轻松占满 */
+  flex-direction: column; /* 确保内容垂直排列 */
 }
 
 @media (prefers-color-scheme: light) {
