@@ -177,8 +177,8 @@ async function copyResult() {
           aria-label="待翻译文本输入区"
           class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md"
         />
-        <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="清除输入">
-          <X class="size-1" />
+        <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 clear-button-override" aria-label="清除输入">
+          <X />
         </Button>
       </div>
 
@@ -190,8 +190,8 @@ async function copyResult() {
           aria-label="翻译结果展示区"
           class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md bg-muted"
         />
-        <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="复制结果">
-          <Copy class="size-1" />
+        <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 copy-button-override" aria-label="复制结果">
+          <Copy />
         </Button>
       </div>
     </div>
@@ -241,4 +241,20 @@ async function copyResult() {
 
 /* 如果有特定于此组件且无法通过 Tailwind 轻松实现的样式，可以保留在这里 */
 /* 例如，如果需要非常特定的动画或过渡效果 */
+  /* 如果有特定于此组件且无法通过 Tailwind 轻松实现的样式，可以保留在这里 */
+  /* 例如，如果需要非常特定的动画或过渡效果 */
+
+  .clear-button-override svg,
+  .copy-button-override svg {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    min-height: 12px !important;
+    stroke-width: 1px !important; /* 使用 '1px' 而不是 '1' 以确保是有效的 CSS 值 */
+  }
+
+  .clear-button-override,
+  .copy-button-override {
+    padding: 0 !important; /* 确保按钮没有内边距影响图标空间 */
+  }
 </style>
