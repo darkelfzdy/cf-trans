@@ -175,7 +175,7 @@ async function copyResult() {
           v-model="inputText"
           placeholder="输入要翻译的文本"
           aria-label="待翻译文本输入区"
-          class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md"
+          class="flex-grow resize-none min-h-[300px] px-4 pb-4 pt-10 pr-12 border rounded-md"
         />
         <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 clear-button-override" aria-label="清除输入">
           <X />
@@ -188,7 +188,7 @@ async function copyResult() {
           readonly
           placeholder="翻译结果"
           aria-label="翻译结果展示区"
-          class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md bg-muted"
+          class="flex-grow resize-none min-h-[300px] px-4 pb-4 pt-10 pr-12 border rounded-md bg-muted"
         />
         <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 copy-button-override" aria-label="复制结果">
           <Copy />
