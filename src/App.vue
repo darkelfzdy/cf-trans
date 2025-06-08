@@ -132,7 +132,7 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center p-4 sm:p-8 md:p-12 bg-background text-foreground mx-auto w-full max-w-6xl mt-8">
+  <div class="translator-app flex flex-col items-center p-4 sm:p-8 md:p-12 bg-background text-foreground mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
@@ -211,6 +211,13 @@ async function copyResult() {
 /* .translator-app, h1, .title-logo, .controls, .controls select, .swap-button, */
 /* .text-areas, .text-area-container, textarea, .clear-button, .copy-button */
 /* 的样式已通过 Tailwind CSS 类在模板中直接定义或由 shadcn-vue 组件提供。 */
+
+.translator-app {
+  max-width: 600px; /* 非常小的值，用于测试样式是否生效 */
+  width: 100%; /* 确保在小屏幕上能正确适应 */
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* 可以保留或调整全局消息提示的样式，或完全依赖 Tailwind 类 */
 .loading-indicator {
