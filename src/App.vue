@@ -132,7 +132,7 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center p-4 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-5xl mt-8">
+  <div class="translator-app flex flex-col items-center p-2 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-5xl mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
