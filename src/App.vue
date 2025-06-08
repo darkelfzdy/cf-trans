@@ -246,10 +246,10 @@ async function copyResult() {
 
   .clear-button-override svg,
   .copy-button-override svg {
-    width: 12px !important;
-    height: 12px !important;
-    min-width: 12px !important;
-    min-height: 12px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
     stroke-width: 1px !important; /* 使用 '1px' 而不是 '1' 以确保是有效的 CSS 值 */
   }
 
