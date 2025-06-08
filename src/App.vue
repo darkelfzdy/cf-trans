@@ -132,14 +132,14 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center min-h-screen p-4 sm:p-6 md:p-8 bg-background text-foreground">
+  <div class="translator-app flex flex-col items-center p-4 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-4xl mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
-    <div class="controls flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 w-full max-w-2xl">
-      <Select v-model="sourceLang">
-        <SelectTrigger class="w-full sm:w-[180px]" aria-label="源语言">
+    <div class="controls flex flex-row items-center justify-between gap-3 sm:gap-4 mb-6 w-full">
+      <Select v-model="sourceLang" class="flex-grow basis-0">
+        <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
         </SelectTrigger>
         <SelectContent>
@@ -151,12 +151,12 @@ async function copyResult() {
         </SelectContent>
       </Select>
 
-      <Button @click="swapLanguages" variant="outline" size="icon" aria-label="切换语言" class="p-2">
+      <Button @click="swapLanguages" variant="outline" size="icon" aria-label="切换语言" class="p-2 flex-shrink-0 mx-2">
         <Languages class="h-5 w-5" />
       </Button>
 
-      <Select v-model="targetLang">
-        <SelectTrigger class="w-full sm:w-[180px]" aria-label="目标语言">
+      <Select v-model="targetLang" class="flex-grow basis-0">
+        <SelectTrigger class="w-full" aria-label="目标语言">
           <SelectValue placeholder="选择目标语言" />
         </SelectTrigger>
         <SelectContent>
@@ -169,7 +169,7 @@ async function copyResult() {
       </Select>
     </div>
 
-    <div class="text-areas grid grid-cols-2 gap-6 w-full max-w-4xl flex-grow">
+    <div class="text-areas grid grid-cols-2 gap-6 w-full flex-grow">
       <div class="relative flex flex-col">
         <Textarea
           v-model="inputText"
