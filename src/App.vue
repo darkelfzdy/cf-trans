@@ -132,12 +132,12 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center p-2 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-5xl mt-8">
+  <div class="translator-app flex flex-col items-center p-2 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-8xl mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
-    <div class="controls flex flex-row items-center justify-between gap-3 sm:gap-4 mb-6 w-full">
+    <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-6 w-full">
       <Select v-model="sourceLang" class="flex-grow basis-0">
         <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
