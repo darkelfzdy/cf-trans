@@ -213,7 +213,7 @@ async function copyResult() {
 /* 的样式已通过 Tailwind CSS 类在模板中直接定义或由 shadcn-vue 组件提供。 */
 
 .translator-app {
-  max-width: 600px; /* 非常小的值，用于测试样式是否生效 */
+  max-width: 1000px;
   width: 100%; /* 确保在小屏幕上能正确适应 */
   margin-left: auto;
   margin-right: auto;
