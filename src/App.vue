@@ -138,7 +138,7 @@ async function copyResult() {
     </h1>
 
     <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-6 w-full">
-      <Select v-model="sourceLang" class="flex-grow basis-0">
+      <Select v-model="sourceLang" class="flex-grow basis-0 min-w-[400px]">
         <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
         </SelectTrigger>
@@ -155,7 +155,7 @@ async function copyResult() {
         <Languages class="h-5 w-5" />
       </Button>
 
-      <Select v-model="targetLang" class="flex-grow basis-0">
+      <Select v-model="targetLang" class="flex-grow basis-0 min-w-[400px]">
         <SelectTrigger class="w-full" aria-label="目标语言">
           <SelectValue placeholder="选择目标语言" />
         </SelectTrigger>
