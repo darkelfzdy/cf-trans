@@ -137,7 +137,7 @@ async function copyResult() {
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
-    <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-6 w-full">
+    <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-10 w-full">
       <Select v-model="sourceLang" class="flex-grow basis-0">
         <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
@@ -169,7 +169,7 @@ async function copyResult() {
       </Select>
     </div>
 
-    <div class="text-areas grid grid-cols-2 gap-10 w-full flex-grow">
+    <div class="text-areas grid grid-cols-2 gap-20 w-full flex-grow">
       <div class="relative flex flex-col">
         <Textarea
           v-model="inputText"
