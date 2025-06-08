@@ -132,13 +132,13 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center p-2 sm:p-6 md:p-8 bg-background text-foreground mx-auto max-w-8xl mt-8">
+  <div class="translator-app flex flex-col items-center p-4 sm:p-8 md:p-12 bg-background text-foreground mx-auto w-full max-w-screen-xl mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
     <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-6 w-full">
-      <Select v-model="sourceLang" class="flex-grow basis-0 min-w-[400px]">
+      <Select v-model="sourceLang" class="flex-grow basis-0">
         <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
         </SelectTrigger>
@@ -155,7 +155,7 @@ async function copyResult() {
         <Languages class="h-5 w-5" />
       </Button>
 
-      <Select v-model="targetLang" class="flex-grow basis-0 min-w-[400px]">
+      <Select v-model="targetLang" class="flex-grow basis-0">
         <SelectTrigger class="w-full" aria-label="目标语言">
           <SelectValue placeholder="选择目标语言" />
         </SelectTrigger>
@@ -175,7 +175,7 @@ async function copyResult() {
           v-model="inputText"
           placeholder="输入要翻译的文本"
           aria-label="待翻译文本输入区"
-          class="flex-grow resize-none min-h-[200px] p-4 pr-12 border rounded-md"
+          class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md"
         />
         <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="清除输入">
           <X class="h-5 w-5" />
@@ -188,7 +188,7 @@ async function copyResult() {
           readonly
           placeholder="翻译结果"
           aria-label="翻译结果展示区"
-          class="flex-grow resize-none min-h-[200px] p-4 pr-12 border rounded-md bg-muted"
+          class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md bg-muted"
         />
         <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="复制结果">
           <Copy class="h-5 w-5" />
