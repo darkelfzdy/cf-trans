@@ -132,7 +132,7 @@ async function copyResult() {
 </script>
 
 <template>
-  <div class="translator-app flex flex-col items-center p-4 sm:p-8 md:p-12 bg-background text-foreground mx-auto w-full max-w-screen-xl mt-8">
+  <div class="translator-app flex flex-col items-center p-4 sm:p-8 md:p-12 bg-background text-foreground mx-auto w-full max-w-6xl mt-8">
     <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
@@ -169,7 +169,7 @@ async function copyResult() {
       </Select>
     </div>
 
-    <div class="text-areas grid grid-cols-2 gap-8 w-full flex-grow">
+    <div class="text-areas grid grid-cols-2 gap-10 w-full flex-grow">
       <div class="relative flex flex-col">
         <Textarea
           v-model="inputText"
