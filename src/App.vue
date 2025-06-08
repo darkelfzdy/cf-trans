@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Languages, X, Copy } from 'lucide-vue-next';
+import { ArrowLeftRight, X, Copy } from 'lucide-vue-next';
 
 const inputText = ref('');
 const translatedText = ref('');
@@ -152,7 +152,7 @@ async function copyResult() {
       </Select>
 
       <Button @click="swapLanguages" variant="outline" size="icon" aria-label="切换语言" class="p-2 flex-shrink-0 mx-2">
-        <Languages class="h-5 w-5" />
+        <ArrowLeftRight class="h-5 w-5" />
       </Button>
 
       <Select v-model="targetLang" class="flex-grow basis-0">
