@@ -178,7 +178,7 @@ async function copyResult() {
           class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md"
         />
         <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="清除输入">
-          <X class="h-5 w-5" />
+          <X class="h-1 w-1" />
         </Button>
       </div>
 
@@ -191,7 +191,7 @@ async function copyResult() {
           class="flex-grow resize-none min-h-[300px] p-4 pr-12 border rounded-md bg-muted"
         />
         <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8" aria-label="复制结果">
-          <Copy class="h-5 w-5" />
+          <Copy class="h-1 w-1" />
         </Button>
       </div>
     </div>
