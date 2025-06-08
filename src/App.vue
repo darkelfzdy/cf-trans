@@ -137,7 +137,7 @@ async function copyResult() {
       <img src="/vite.svg" alt="Vite Logo" class="h-8 w-8" /> AI 翻译
     </h1>
 
-    <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 mb-10 w-full">
+    <div class="controls flex flex-row items-center justify-between gap-6 sm:gap-8 w-full">
       <Select v-model="sourceLang" class="flex-grow basis-0">
         <SelectTrigger class="w-full" aria-label="源语言">
           <SelectValue placeholder="选择源语言" />
@@ -169,7 +169,7 @@ async function copyResult() {
       </Select>
     </div>
 
-    <div class="text-areas grid grid-cols-2 gap-20 w-full flex-grow">
+    <div class="text-areas grid grid-cols-2 w-full flex-grow">
       <div class="relative flex flex-col">
         <Textarea
           v-model="inputText"
@@ -217,6 +217,15 @@ async function copyResult() {
   width: 100%; /* 确保在小屏幕上能正确适应 */
   margin-left: auto;
   margin-right: auto;
+}
+
+.controls {
+  margin-bottom: 32px; /* 约等于 Tailwind mb-8 */
+  /* 注意：原有的 gap-6 sm:gap-8 仍然通过类控制内部元素间距 */
+}
+
+.text-areas {
+  gap: 32px; /* 约等于 Tailwind gap-8 */
 }
 
 /* 可以保留或调整全局消息提示的样式，或完全依赖 Tailwind 类 */
