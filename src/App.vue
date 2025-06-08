@@ -170,27 +170,27 @@ async function copyResult() {
     </div>
 
     <div class="text-areas grid grid-cols-2 w-full flex-grow">
-      <div class="relative flex flex-col">
+      <div class="relative input-area-container" style="position: relative !important;">
         <Textarea
           v-model="inputText"
           placeholder="输入要翻译的文本"
           aria-label="待翻译文本输入区"
-          class="flex-grow resize-none min-h-[300px] px-4 pb-4 pt-10 pr-12 border rounded-md"
+          class="flex-grow resize-none min-h-[300px] border rounded-md input-textarea-override"
         />
-        <Button @click="clearInput" v-if="inputText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 clear-button-override" aria-label="清除输入">
+        <Button @click="clearInput" v-if="inputText" class="clear-button-override" aria-label="清除输入">
           <X />
         </Button>
       </div>
 
-      <div class="relative flex flex-col">
+      <div class="relative output-area-container" style="position: relative !important;">
         <Textarea
           :model-value="translatedText"
           readonly
           placeholder="翻译结果"
           aria-label="翻译结果展示区"
-          class="flex-grow resize-none min-h-[300px] px-4 pb-4 pt-10 pr-12 border rounded-md bg-muted"
+          class="flex-grow resize-none min-h-[300px] border rounded-md bg-muted output-textarea-override"
         />
-        <Button @click="copyResult" v-if="translatedText" variant="ghost" size="icon" class="absolute top-2 right-2 h-8 w-8 copy-button-override" aria-label="复制结果">
+        <Button @click="copyResult" v-if="translatedText" class="copy-button-override" aria-label="复制结果">
           <Copy />
         </Button>
       </div>
@@ -253,8 +253,36 @@ async function copyResult() {
     stroke-width: 1px !important; /* 使用 '1px' 而不是 '1' 以确保是有效的 CSS 值 */
   }
 
+  .input-area-container,
+  .output-area-container {
+    position: relative !important; /* 强制定位上下文 */
+  }
+
   .clear-button-override,
   .copy-button-override {
-    padding: 0 !important; /* 确保按钮没有内边距影响图标空间 */
+    padding: 0 !important;
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important; /* Standard top-right positioning */
+    left: auto !important; /* Explicitly set to prevent interference */
+    bottom: auto !important; /* Explicitly set to prevent interference */
+    width: 2rem !important; /* 32px */
+    height: 2rem !important; /* 32px */
+    z-index: 10 !important;
+    display: inline-flex !important; /* Revert to inline-flex, but keep absolute positioning */
+    align-items: center !important; /* Ensure icon is centered if button is inline-flex */
+    justify-content: center !important; /* Ensure icon is centered if button is inline-flex */
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  textarea.input-textarea-override,
+  textarea.output-textarea-override {
+    box-sizing: border-box !important; /* Corrected: remove duplicate */
+    padding-top: 48px !important;    /* 3rem, 确保足够空间 */
+    padding-right: 48px !important;   /* 3rem, 对应 pr-12 */
+    padding-left: 16px !important;    /* 1rem, 对应 px-4 的左侧 */
+    padding-bottom: 16px !important;  /* 1rem, 对应 pb-4 */
   }
 </style>
