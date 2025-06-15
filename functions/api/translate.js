@@ -1,19 +1,18 @@
 // 文件路径: functions/api/translate.js
 
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
 // 定义Pages Function的POST请求处理器
 export async function onRequestPost(context) {
   try {
     // 1. 从环境变量中安全地获取配置（由Cloudflare平台注入）
     // 这些变量在本地开发时从 .env 文件读取，在生产环境从Cloudflare仪表盘读取。
-    // GOOGLE_AI_API_KEY 现在用作 OpenAI 兼容 API 的 API 密钥 (Bearer Token)
-    const API_KEY = context.env.GOOGLE_AI_API_KEY;
-    // GEMINI_MODEL_NAME 现在用作 OpenAI 兼容 API 请求中的模型名称
-    const MODEL_NAME = context.env.GEMINI_MODEL_NAME;
-    // AI_GATEWAY_URL 现在是 OpenAI 兼容 API 的基础 URL
-    const API_BASE_URL = context.env.AI_GATEWAY_URL;
+    const GOOGLE_AI_API_KEY = context.env.GOOGLE_AI_API_KEY;
+    const GEMINI_MODEL_NAME = context.env.GEMINI_MODEL_NAME;
+    const AI_GATEWAY_URL = context.env.AI_GATEWAY_URL;
 
-    // 检查必要的环境变量是否存在 (名称保持不变，含义已更新)
-    if (!API_KEY || !MODEL_NAME || !API_BASE_URL) {
+    // 检查必要的环境变量是否存在
+    if (!GOOGLE_AI_API_KEY || !GEMINI_MODEL_NAME || !AI_GATEWAY_URL) {
       return new Response(JSON.stringify({ error: 'Missing server-side environment variables.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -29,76 +28,31 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 3. 构建 OpenAI 兼容 API 的请求 URL
-    // 假设 OpenAI 兼容的 completions 端点是 /chat/completions
-    const requestUrl = `${API_BASE_URL}/chat/completions`;
+    // 3. 初始化Google Generative AI SDK实例
+    const genAI = new GoogleGenerativeAI(GOOGLE_AI_API_KEY);
 
-    // 4. 构建请求体
-    const requestBody = {
-      model: MODEL_NAME,
-      messages: [
-        {
-          role: "system",
-          content: "You are a translation engine."
-        },
-        {
-          role: "user",
-          content: `Translate the following text from ${sourceLang} to ${targetLang}. Only return the translated text, without any additional explanations or context. Text to translate: "${text}"`
-        }
-      ]
-    };
+    // 4. 获取模型实例，并【关键】将baseUrl配置为Cloudflare AI Gateway的URL
+    const model = genAI.getGenerativeModel(
+      { model: GEMINI_MODEL_NAME },
+      { baseUrl: AI_GATEWAY_URL } // 这是通过AI Gateway路由的关键配置
+    );
 
-    // 5. 发送 fetch 请求到 OpenAI 兼容 API
-    const apiResponse = await fetch(requestUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify(requestBody)
-    });
+    // 5. 构建清晰的翻译提示（Prompt）
+    const prompt = `Translate the following text from ${sourceLang} to ${targetLang}. Only return the translated text, without any additional explanations or context. Text to translate: "${text}"`;
 
-    // 检查 API 响应是否成功
-    if (!apiResponse.ok) {
-      let errorDetails = `API request failed with status ${apiResponse.status}`;
-      try {
-        const errorData = await apiResponse.json();
-        errorDetails = errorData.error?.message || JSON.stringify(errorData);
-      } catch (e) {
-        // 如果响应体不是JSON或解析失败，使用状态文本
-        errorDetails = apiResponse.statusText;
-      }
-      console.error("Error from OpenAI compatible API:", errorDetails);
-      return new Response(JSON.stringify({ error: 'Failed to get translation from API.', details: errorDetails }), {
-        status: apiResponse.status, // 返回API的实际状态码
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    // 6. 调用模型生成内容
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const translatedText = response.text();
 
-    // 6. 解析 API 响应 JSON
-    const responseData = await apiResponse.json();
-    
-    // 7. 提取翻译后的文本
-    // 通常位于 responseData.choices[0].message.content
-    let translatedText = '';
-    if (responseData.choices && responseData.choices.length > 0 && responseData.choices[0].message && responseData.choices[0].message.content) {
-      translatedText = responseData.choices[0].message.content.trim();
-    } else {
-      console.error("Unexpected API response structure:", responseData);
-      return new Response(JSON.stringify({ error: 'Failed to parse translation from API response.', details: 'Unexpected API response structure' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    // 8. 将翻译结果以JSON格式返回给前端
+    // 7. 将翻译结果以JSON格式返回给前端
     return new Response(JSON.stringify({ translation: translatedText }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
 
   } catch (error) {
-    // 9. 统一的错误处理
+    // 8. 统一的错误处理
     console.error("Error in translation function:", error);
     return new Response(JSON.stringify({ error: 'Failed to process translation.', details: error.message }), {
       status: 500,
